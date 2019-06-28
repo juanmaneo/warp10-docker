@@ -14,18 +14,24 @@
 #   limitations under the License.
 #
 
-FROM openjdk:8-jre-alpine
+##
+## This is modified version of original Dockerfile to use Debian stretch (for original cf: https://github.com/senx/warp10-docker/blob/master/Dockerfile)
+## The default configuration (cf: warp10.start.sh) is also tweaked to get for example nanoseconds granularity
+## Bumped up sensition version to 1.0.18
+##
+
+FROM openjdk:8-jre-stretch
 
 LABEL author="SenX S.A.S."
-LABEL maintainer="contact@senx.io"
+LABEL maintainer="do_not_contact_since_this_is_a_mod@senx.io"
 
-# Updating apk index
-RUN apk update && apk add bash curl python
+# Updating
+RUN apt-get update && apt-get install -y bash bash-builtins bash-completion curl ca-certificates wget python && apt-get clean
 
-# Installing build-dependencies
-RUN apk add --virtual=build-dependencies ca-certificates wget
+# install some useful tools for dev/debug
+RUN apt-get update && apt-get install -y aptitude emacs-nox net-tools procps psmisc htop iotop nload && apt-get clean
 
-ENV JAVA_HOME=/usr \
+ENV \
   WARP10_VOLUME=/data \
   WARP10_HOME=/opt/warp10 \
   WARP10_DATA_DIR=/data/warp10 \
@@ -43,7 +49,7 @@ RUN mkdir -p /opt \
   && rm warp10-${WARP10_VERSION}.tar.gz \
   && ln -s /opt/warp10-${WARP10_VERSION} ${WARP10_HOME}
 
-ARG SENSISION_VERSION=1.0.17
+ARG SENSISION_VERSION=1.0.18
 ARG SENSISION_URL=https://dl.bintray.com/senx/generic/io/warp10/sensision-service/${SENSISION_VERSION}
 
 # Getting Sensision
@@ -52,9 +58,6 @@ RUN cd /opt \
   && tar xzf sensision-service-${SENSISION_VERSION}.tar.gz \
   && rm sensision-service-${SENSISION_VERSION}.tar.gz \
   && ln -s /opt/sensision-${SENSISION_VERSION} ${SENSISION_HOME}
-
-# Deleting build-dependencies
-RUN apk del build-dependencies
 
 ENV WARP10_JAR=${WARP10_HOME}/bin/warp10-${WARP10_VERSION}.jar \
   WARP10_CONF=${WARP10_HOME}/etc/conf-standalone.conf \
@@ -71,5 +74,9 @@ VOLUME ${WARP10_MACROS}
 
 # Exposing port 8080
 EXPOSE 8080 8081
+
+# For debug purpose
+RUN java -version
+RUN python --version
 
 CMD ${WARP10_HOME}/bin/warp10.start.sh

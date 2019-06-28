@@ -1,5 +1,8 @@
 # Warp 10 Docker image
 
+This is a mod from official Docker image source at https://github.com/senx/warp10-docker
+Is uses Debian stretch and tweak the default parameters of Warp10 like using nanoseconds for time granularity
+
 ## Quick reference
 
 - **Where to get help:** [Warp10.io](https://warp10.io), [Warp 10 users group](https://groups.google.com/group/warp10-users)
@@ -130,7 +133,7 @@ A full [getting started](http://www.warp10.io/getting-started/) is available to 
 
 ## Build the image
 
-If you want to build your own Warp 10 image, clone the Warp 10 docker repository:
+If you want to build your own Warp 10 image, clone the original Warp 10 docker repository:
 
 ```console
 git clone https://github.com/senx/warp10-docker.git

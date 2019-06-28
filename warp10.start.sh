@@ -15,6 +15,8 @@
 #   limitations under the License.
 #
 
+echo "TEST1"
+
 warp10_pid=
 sensision_pid=
 
@@ -94,6 +96,28 @@ if [ -e ${WARP10_DATA_DIR}/etc/conf-standalone.conf ]; then
 
   echo "Launch Warp10"
   sed -i -e "s/127.0.0.1/0.0.0.0/g" ${WARP10_HOME}/etc/conf-standalone.conf
+
+  # change default parameters
+  sed -i -e "s/warp.timeunits = us/warp.timeunits = ns/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxops = 1000/warpscript.maxops = 10000000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxops.hard = 2000/warpscript.maxops.hard = 10000000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxbuckets = 1000000/warpscript.maxbuckets = 10000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxbuckets.hard = 100000/warpscript.maxbuckets.hard = 1000000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxdepth = 1000/warpscript.maxdepth  = 10000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxdepth.hard = 1000/warpscript.maxdepth.hard = 1000000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxfetch = 100000/warpscript.maxfetch = 1000000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxfetch.hard = 1000000/warpscript.maxfetch.hard = 10000000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxgts = 100000/warpscript.maxgts = 1000000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxgts.hard = 100000/warpscript.maxgts.hard = 1000000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxloop = 5000/warpscript.maxloop = 10000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxloop.hard = 10000/warpscript.maxloop.hard = 100000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxrecursion = 16/warpscript.maxrecursion = 24/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxrecursion.hard = 32/warpscript.maxrecursion.hard = 10000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxsymbols = 64/warpscript.maxsymbols = 1024/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxsymbols.hard = 256/warpscript.maxsymbols.hard = 10000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxpixels = 1000000/warpscript.maxpixels = 10000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  sed -i -e "s/warpscript.maxpixels.hard = 1000000/warpscript.maxpixels.hard = 1000000000/g" ${WARP10_HOME}/etc/conf-standalone.conf
+  
   ${WARP10_HOME}/bin/warp10-standalone.init start
   warp10_pid=`cat ${WARP10_HOME}/logs/warp10.pid`
   echo "Warp10 running, pid=${warp10_pid}"

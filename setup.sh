@@ -65,6 +65,7 @@ else
 
   rm -rf ${WARP10_HOME}/datalog_done
   ln -s ${WARP10_DATA_DIR}/datalog_done ${WARP10_HOME}/datalog_done
+
 fi
 
 # Sensision install
